@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoucherApp", "src\VoucherApp.csproj", "{093CC7C3-EB65-4EF3-ABBA-701D41264E90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{093CC7C3-EB65-4EF3-ABBA-701D41264E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093CC7C3-EB65-4EF3-ABBA-701D41264E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093CC7C3-EB65-4EF3-ABBA-701D41264E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093CC7C3-EB65-4EF3-ABBA-701D41264E90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74736C6A-FA0F-4CB7-9B03-A088A1C2C0D0}
+	EndGlobalSection
+EndGlobal
