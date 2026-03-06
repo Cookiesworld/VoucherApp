@@ -22,9 +22,18 @@ public class VoucherRepository : IVoucherRepository
     public bool ValidateVoucher(Voucher voucher)
     {
         // A valid voucher is one that has not expired, has a positive discount value, and has not been used.
-        if (voucher.Expiry < DateTime.UtcNow) return false;
-        if (voucher.IsUsed) return false;
-        if (voucher.DiscountValue <= 0) return false;
+        if (voucher.Expiry < DateTime.UtcNow) { return false; }
+
+        // check if the voucher has been used        
+        if (_dbContext.UsedVouchers.Any(vu => vu.Voucher.Code == voucher.Code))
+        {
+            return false;
+        }
+
+        if (voucher.DiscountValue <= 0)
+        {
+            return false;
+        }
 
         return true;
     }
@@ -35,7 +44,7 @@ public class VoucherRepository : IVoucherRepository
     /// <param name="voucher">The voucher to mark as used.</param>
     public void MarkVoucherAsUsed(Voucher voucher)
     {
-        _dbContext.Vouchers.Update(voucher);
+        _dbContext.UsedVouchers.Add(new VoucherUsage(voucher, DateTime.UtcNow));
         _dbContext.SaveChanges();
     }
 }
