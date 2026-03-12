@@ -14,6 +14,25 @@ public class VoucherRepository : IVoucherRepository
         return _dbContext.Vouchers.FirstOrDefault(v => v.Code == code);
     }
 
+    public IEnumerable<Voucher> GetAll()
+    {
+        return _dbContext.Vouchers.ToList();
+    }
+
+    public bool IsUsed(string code)
+    {
+        return _dbContext.UsedVouchers.Any(vu => vu.Voucher.Code == code);
+    }
+
+    public void AddVoucher(Voucher voucher)
+    {
+        if (_dbContext.Vouchers.Any(v => v.Code == voucher.Code))
+            return;
+
+        _dbContext.Vouchers.Add(voucher);
+        _dbContext.SaveChanges();
+    }
+
     /// <summary>
     /// Checks if the voucher is valid for use.
     /// </summary>
@@ -44,7 +63,7 @@ public class VoucherRepository : IVoucherRepository
     /// <param name="voucher">The voucher to mark as used.</param>
     public void MarkVoucherAsUsed(Voucher voucher)
     {
-        _dbContext.UsedVouchers.Add(new VoucherUsage(voucher, DateTime.UtcNow));
+        _dbContext.UsedVouchers.Add(new VoucherUsage(voucher.Id, DateTime.UtcNow));
         _dbContext.SaveChanges();
     }
 }

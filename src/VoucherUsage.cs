@@ -2,11 +2,23 @@ namespace VoucherApp;
 
 public class VoucherUsage
 {
-    public VoucherUsage(Voucher voucher, DateTime usageDate)
+    // Primary key for EF Core
+    public int Id { get; private set; }
+
+    // Foreign key to Voucher
+    public int VoucherId { get; private set; }
+
+    // Navigation property
+    public Voucher Voucher { get; set; }
+
+    public DateTime UsageDate { get; private set; }
+
+    // Parameterless constructor required by EF Core
+    public VoucherUsage() { }
+
+    public VoucherUsage(int voucherId, DateTime usageDate)
     {
-        Voucher = voucher;
+        VoucherId = voucherId;
         UsageDate = usageDate;
     }
-    public Voucher Voucher { get; private set; }
-    public DateTime UsageDate { get; private set; }
 }
