@@ -14,6 +14,25 @@ public class VoucherRepository : IVoucherRepository
         return _dbContext.Vouchers.FirstOrDefault(v => v.Code == code);
     }
 
+    public IEnumerable<Voucher> GetAll()
+    {
+        return _dbContext.Vouchers.ToList();
+    }
+
+    public bool IsUsed(string code)
+    {
+        return _dbContext.UsedVouchers.Any(vu => vu.Voucher.Code == code);
+    }
+
+    public void AddVoucher(Voucher voucher)
+    {
+        if (_dbContext.Vouchers.Any(v => v.Code == voucher.Code))
+            return;
+
+        _dbContext.Vouchers.Add(voucher);
+        _dbContext.SaveChanges();
+    }
+
     /// <summary>
     /// Checks if the voucher is valid for use.
     /// </summary>
@@ -22,9 +41,18 @@ public class VoucherRepository : IVoucherRepository
     public bool ValidateVoucher(Voucher voucher)
     {
         // A valid voucher is one that has not expired, has a positive discount value, and has not been used.
-        if (voucher.Expiry < DateTime.UtcNow) return false;
-        if (voucher.IsUsed) return false;
-        if (voucher.DiscountValue <= 0) return false;
+        if (voucher.Expiry < DateTime.UtcNow) { return false; }
+
+        // check if the voucher has been used        
+        if (_dbContext.UsedVouchers.Any(vu => vu.Voucher.Code == voucher.Code))
+        {
+            return false;
+        }
+
+        if (voucher.DiscountValue <= 0)
+        {
+            return false;
+        }
 
         return true;
     }
@@ -35,7 +63,7 @@ public class VoucherRepository : IVoucherRepository
     /// <param name="voucher">The voucher to mark as used.</param>
     public void MarkVoucherAsUsed(Voucher voucher)
     {
-        _dbContext.Vouchers.Update(voucher);
+        _dbContext.UsedVouchers.Add(new VoucherUsage(voucher.Id, DateTime.UtcNow));
         _dbContext.SaveChanges();
     }
 }
